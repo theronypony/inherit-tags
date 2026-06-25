@@ -1,0 +1,31 @@
+# vscode
+.vscode
+
+# Intellij
+*.iml
+.idea
+
+# npm
+node_modules
+package-lock.json
+
+# Don't include the compiled main.js file in the repo.
+# It should be uploaded to GitHub releases instead.
+main.js
+
+# Exclude sourcemaps
+*.map
+
+# macOS
+.DS_Store
+
+# Local AI rules
+.claude
+CLAUDE.md
+AGENTS.md
+
+# Obsidian test vault state
+.obsidian
+
+# Internal planning/design notes
+auto-tag-notes-final.md
