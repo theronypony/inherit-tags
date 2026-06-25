@@ -1,6 +1,6 @@
 {
   "name": "inherit-tags",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Adds the tag selected in Notebook Navigator to newly created notes automatically. Also includes a tool to convert inline #tags into frontmatter metadata.",
   "main": "main.js",
   "engines": {

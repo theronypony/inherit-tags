@@ -15,6 +15,10 @@ automatically added to the new note's frontmatter `tags:` array. It works with n
 - Skips a tag that's already implied by a more specific one already present
   (e.g. won't add `work` when the note already has `work/meetings`).
 - Configurable per-folder exclusions (e.g. `Templates`).
+- **Multi-device safe** — when the same vault is open on more than one device (e.g. Mac + iOS via
+  Obsidian Sync, Syncthing, or iCloud), only the device that *created* the note applies its selected
+  tag. A note created on one device already carries its tag when it syncs to the others, so the other
+  devices leave it alone instead of stamping their own selection on top.
 
 ### Inline Tag Converter
 
@@ -60,6 +64,11 @@ plugin settings.
 ## Known Limitations
 
 - Auto-tagging only applies to `.md` files (not canvas or other formats).
+- Notes that are **created from a template that pre-fills `tags:`** will not receive the active
+  navigator tag. The auto-tagger treats any note that already has frontmatter tags as "authored
+  elsewhere" (this is what makes multi-device tagging safe — see Auto-Tagging above), and a template
+  with tags is indistinguishable from a note that already inherited its tag. Add the tag inside your
+  template, or exclude the template's target folder, if you need both.
 - The inline tag converter has **no undo** — always back up your vault before running it.
 
 ## Implementation notes

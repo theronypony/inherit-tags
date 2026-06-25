@@ -1,7 +1,7 @@
 import { App, TAbstractFile, TFile } from 'obsidian';
 import { NavItem, NotebookNavigatorAPI } from './nnApi';
 import { readNavItemTag, resolveActiveTag } from './tagResolver';
-import { mergeTagsIntoFrontmatter } from './frontmatter';
+import { mergeTagsIntoFrontmatter, readFrontmatterTags } from './frontmatter';
 import { AutoTagSettings } from './settings';
 
 /**
@@ -81,6 +81,19 @@ export class AutoTagger {
         // tag index (the Tags pane, Notebook Navigator's tag tree) don't see it until a full reparse
         // at restart. Waiting first means our write produces a clean change event everyone picks up.
         await this.whenFileIndexed(file);
+
+        // Cross-device guard: only tag notes that this device actually authored. When the same vault
+        // is open on multiple devices (e.g. Mac + iOS via Obsidian Sync / Syncthing / iCloud), a note
+        // created on one device fires a `create` event on the *other* device when it syncs in — and
+        // without this guard that device would also stamp its own active tag, so the note ends up with
+        // both selections. A note authored elsewhere arrives already carrying its tag(s), so the
+        // presence of any frontmatter tag means "not mine — leave it alone". A genuinely new local
+        // note is empty at creation, so this only suppresses synced-in notes.
+        // Known limitation: notes created from a template that pre-fills `tags:` look "already tagged"
+        // and so will NOT receive the active navigator tag, even on the device that created them.
+        if (readFrontmatterTags(this.app, file).length > 0) {
+            return;
+        }
 
         await mergeTagsIntoFrontmatter(this.app, file, [tag]);
     }
