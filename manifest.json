@@ -1,9 +1,9 @@
 {
   "id": "inherit-tags",
   "name": "Inherit Tags",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minAppVersion": "1.5.0",
-  "description": "When you create a note while a tag is selected in Notebook Navigator, that tag is added automatically to the new note's frontmatter. Also includes a conversion tool for importing inline #tags to frontmatter metadata.",
+  "description": "Adds the tag selected in Notebook Navigator to newly created notes automatically. Also includes a tool to convert inline #tags into frontmatter metadata.",
   "author": "theronypony",
   "isDesktopOnly": false
 }

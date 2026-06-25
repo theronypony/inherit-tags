@@ -1,0 +1,64 @@
+/* Settings tab */
+.inherit-tags-sub-setting {
+    padding-left: 2em;
+}
+
+.inherit-tags-regex-error {
+    color: var(--text-error);
+    font-size: var(--font-ui-smaller);
+    margin-top: 4px;
+}
+
+/* Shared small-text helpers */
+.inherit-tags-detail {
+    font-size: var(--font-ui-smaller);
+}
+
+.inherit-tags-detail-muted {
+    font-size: var(--font-ui-smaller);
+    color: var(--text-muted);
+}
+
+/* Preview modal */
+.inherit-tags-preview-list {
+    max-height: 320px;
+    overflow-y: auto;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 6px;
+    padding: 8px;
+    margin-bottom: 12px;
+}
+
+.inherit-tags-preview-item {
+    margin-bottom: 8px;
+}
+
+.inherit-tags-preview-path {
+    font-weight: 600;
+}
+
+/* Progress modal */
+.inherit-tags-progress-track {
+    height: 8px;
+    width: 100%;
+    background: var(--background-modifier-border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 8px 0;
+}
+
+.inherit-tags-progress-fill {
+    height: 100%;
+    width: 0;
+    background: var(--interactive-accent);
+    transition: width 0.1s linear;
+}
+
+/* Summary modal */
+.inherit-tags-summary-failures {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--background-modifier-border);
+    border-radius: 6px;
+    padding: 8px;
+}

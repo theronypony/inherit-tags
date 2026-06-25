@@ -48,20 +48,12 @@ class PreviewModal extends Modal {
         });
 
         const list = contentEl.createDiv({ cls: 'inherit-tags-preview-list' });
-        list.style.maxHeight = '320px';
-        list.style.overflowY = 'auto';
-        list.style.border = '1px solid var(--background-modifier-border)';
-        list.style.borderRadius = '6px';
-        list.style.padding = '8px';
-        list.style.marginBottom = '12px';
 
         for (const preview of this.previews) {
             const item = list.createDiv({ cls: 'inherit-tags-preview-item' });
-            item.style.marginBottom = '8px';
-            item.createEl('div', { text: preview.path, cls: 'inherit-tags-preview-path' }).style.fontWeight = '600';
+            item.createEl('div', { text: preview.path, cls: 'inherit-tags-preview-path' });
 
-            const addLine = item.createEl('div');
-            addLine.style.fontSize = 'var(--font-ui-smaller)';
+            const addLine = item.createEl('div', { cls: 'inherit-tags-detail' });
             if (preview.tagsToAdd.length > 0) {
                 addLine.setText(`add to frontmatter: ${preview.tagsToAdd.join(', ')}`);
             } else {
@@ -69,9 +61,7 @@ class PreviewModal extends Modal {
                 addLine.setText('no new frontmatter tags (inline tokens will still be removed)');
             }
 
-            const removeLine = item.createEl('div');
-            removeLine.style.fontSize = 'var(--font-ui-smaller)';
-            removeLine.style.color = 'var(--text-muted)';
+            const removeLine = item.createEl('div', { cls: 'inherit-tags-detail-muted' });
             removeLine.setText(`remove ${preview.removedTokenCount} inline ${preview.removedTokenCount === 1 ? 'token' : 'tokens'} from body`);
         }
 

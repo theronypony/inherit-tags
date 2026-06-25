@@ -304,7 +304,7 @@ export async function convertFiles(
 
 /** Lets Obsidian process pending UI events so the interface stays responsive during long runs. */
 export function yieldToEventLoop(): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, 0));
+    return new Promise(resolve => window.setTimeout(resolve, 0));
 }
 
 function describe(error: unknown): string {

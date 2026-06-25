@@ -40,23 +40,15 @@ class SummaryModal extends Modal {
 
         if (failed.length > 0) {
             contentEl.createEl('h3', { text: 'Failures' });
-            const list = contentEl.createDiv();
-            list.style.maxHeight = '200px';
-            list.style.overflowY = 'auto';
-            list.style.border = '1px solid var(--background-modifier-border)';
-            list.style.borderRadius = '6px';
-            list.style.padding = '8px';
+            const list = contentEl.createDiv({ cls: 'inherit-tags-summary-failures' });
             for (const failure of failed) {
-                const row = list.createEl('div');
-                row.style.fontSize = 'var(--font-ui-smaller)';
+                const row = list.createEl('div', { cls: 'inherit-tags-detail' });
                 row.setText(`${failure.path} — ${failure.error ?? 'unknown error'}`);
             }
         }
 
         if (logPath) {
-            const note = contentEl.createEl('p');
-            note.style.color = 'var(--text-muted)';
-            note.style.fontSize = 'var(--font-ui-smaller)';
+            const note = contentEl.createEl('p', { cls: 'inherit-tags-detail-muted' });
             note.setText(`Transaction log written to: ${logPath}`);
         }
 

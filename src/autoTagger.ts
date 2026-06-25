@@ -75,7 +75,44 @@ export class AutoTagger {
             return; // No tag selected and no cached tag → no-op.
         }
 
+        // Wait until Obsidian has finished its *initial* metadata parse of the new file before
+        // writing. Otherwise that parse can land after our write and clobber the tag index back to
+        // "no tags": the tag is correct on disk (the note shows it) but consumers of the metadata
+        // tag index (the Tags pane, Notebook Navigator's tag tree) don't see it until a full reparse
+        // at restart. Waiting first means our write produces a clean change event everyone picks up.
+        await this.whenFileIndexed(file);
+
         await mergeTagsIntoFrontmatter(this.app, file, [tag]);
+    }
+
+    /**
+     * Resolves once the metadata cache has indexed `file`, or after `timeoutMs` as a safety net.
+     * A brand-new file returns `null` from `getFileCache` until its first parse completes; we listen
+     * for the `changed` event for this specific path to know that parse has landed.
+     */
+    private whenFileIndexed(file: TFile, timeoutMs = 2000): Promise<void> {
+        return new Promise(resolve => {
+            if (this.app.metadataCache.getFileCache(file) != null) {
+                resolve();
+                return;
+            }
+            let settled = false;
+            const finish = () => {
+                if (settled) {
+                    return;
+                }
+                settled = true;
+                this.app.metadataCache.offref(ref);
+                window.clearTimeout(timer);
+                resolve();
+            };
+            const ref = this.app.metadataCache.on('changed', changed => {
+                if (changed.path === file.path) {
+                    finish();
+                }
+            });
+            const timer = window.setTimeout(finish, timeoutMs);
+        });
     }
 }
 

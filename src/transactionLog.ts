@@ -1,4 +1,4 @@
-import { App, Plugin } from 'obsidian';
+import { Plugin } from 'obsidian';
 
 export type FileStatus = 'ok' | 'skipped' | 'failed';
 
@@ -35,7 +35,7 @@ export function getLogPath(plugin: Plugin): string {
 export async function writeConversionLog(plugin: Plugin, log: ConversionLog): Promise<string | null> {
     const path = getLogPath(plugin);
     try {
-        await (plugin.app as App).vault.adapter.write(path, JSON.stringify(log, null, 2));
+        await plugin.app.vault.adapter.write(path, JSON.stringify(log, null, 2));
         return path;
     } catch (error) {
         console.error('[inherit-tags] Failed to write conversion log:', error);

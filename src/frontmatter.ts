@@ -82,7 +82,7 @@ export function computeTagsToAdd(existingTags: string[], candidateTags: string[]
 export async function mergeTagsIntoFrontmatter(app: App, file: TFile, tags: string[]): Promise<string[]> {
     let added: string[] = [];
 
-    await app.fileManager.processFrontMatter(file, frontmatter => {
+    await app.fileManager.processFrontMatter(file, (frontmatter: Record<string, unknown>) => {
         const existing = normalizeTagsValue(frontmatter.tags);
         added = computeTagsToAdd(existing, tags);
         if (added.length === 0) {

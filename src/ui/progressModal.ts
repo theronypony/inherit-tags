@@ -25,25 +25,13 @@ export class ProgressModal extends Modal {
 
         this.statusEl = contentEl.createEl('p', { text: 'Starting…' });
 
-        const barTrack = contentEl.createDiv();
-        barTrack.style.height = '8px';
-        barTrack.style.width = '100%';
-        barTrack.style.background = 'var(--background-modifier-border)';
-        barTrack.style.borderRadius = '4px';
-        barTrack.style.overflow = 'hidden';
-        barTrack.style.margin = '8px 0';
-        this.barFill = barTrack.createDiv();
-        this.barFill.style.height = '100%';
-        this.barFill.style.width = '0%';
-        this.barFill.style.background = 'var(--interactive-accent)';
-        this.barFill.style.transition = 'width 0.1s linear';
+        const barTrack = contentEl.createDiv({ cls: 'inherit-tags-progress-track' });
+        this.barFill = barTrack.createDiv({ cls: 'inherit-tags-progress-fill' });
 
-        this.etaEl = contentEl.createEl('p', { text: '' });
-        this.etaEl.style.color = 'var(--text-muted)';
-        this.etaEl.style.fontSize = 'var(--font-ui-smaller)';
+        this.etaEl = contentEl.createEl('p', { text: '', cls: 'inherit-tags-detail-muted' });
 
         new Setting(contentEl).addButton(button =>
-            button.setButtonText('Cancel').setWarning().onClick(() => {
+            button.setButtonText('Cancel').setDestructive().onClick(() => {
                 this.cancelled = true;
                 this.close();
             })
@@ -67,7 +55,7 @@ export class ProgressModal extends Modal {
         }
         if (this.barFill) {
             const pct = total > 0 ? Math.round((processed / total) * 100) : 0;
-            this.barFill.style.width = `${pct}%`;
+            this.barFill.setCssStyles({ width: `${pct}%` });
         }
         if (this.etaEl) {
             this.etaEl.setText(this.formatEta(processed, total, currentPath));

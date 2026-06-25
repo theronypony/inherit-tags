@@ -144,7 +144,7 @@ export class AutoTagNotesSettingTab extends PluginSettingTab {
                 })
             );
         // Render as a sub-option of "Convert existing tags only": indented, and only shown when on.
-        stripSetting.settingEl.style.paddingLeft = '2em';
+        stripSetting.settingEl.addClass('inherit-tags-sub-setting');
         const updateStripVisibility = (): void => {
             stripSetting.settingEl.toggle(this.plugin.settings.convertExistingOnly);
         };
@@ -200,9 +200,6 @@ export class AutoTagNotesSettingTab extends PluginSettingTab {
             );
 
         errorEl = setting.controlEl.createDiv({ cls: 'inherit-tags-regex-error' });
-        errorEl.style.color = 'var(--text-error)';
-        errorEl.style.fontSize = 'var(--font-ui-smaller)';
-        errorEl.style.marginTop = '4px';
         showError(tryCompileRegex(this.plugin.settings.customExcludeRegex).error);
     }
 }
