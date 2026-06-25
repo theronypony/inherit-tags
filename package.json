@@ -1,7 +1,7 @@
 {
   "name": "inherit-tags",
   "version": "1.0.0",
-  "description": "Inherit Tags keeps your Obsidian tagging consistent. When you create a note while a tag is selected in Notebook Navigator, that tag is added to the new note's frontmatter automatically — nested tags included. Also includes a conversion tool that converts existing files that use inline #tags (e.g. from Bear), and converts the inline tags into frontmatter metadata. Notebook Navigator must be installed for the auto-tagging feature. (The inline tag converter works without it.)",
+  "description": "When you create a note while a tag is selected in Notebook Navigator, that tag is added automatically to the new note's frontmatter. Also includes a conversion tool for importing inline #tags to frontmatter metadata.",
   "main": "main.js",
   "engines": {
     "node": ">=18.0.0"
