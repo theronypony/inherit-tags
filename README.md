@@ -62,18 +62,6 @@ plugin settings.
 - Auto-tagging only applies to `.md` files (not canvas or other formats).
 - The inline tag converter has **no undo** — always back up your vault before running it.
 
-## Development
-
-```bash
-npm install
-npm run dev     # watch build → main.js
-npm run build   # typecheck + production build
-npm test        # unit tests
-```
-
-Copy `main.js`, `manifest.json` (and `styles.css` if added) into
-`<vault>/.obsidian/plugins/inherit-tags/` to test in a real vault.
-
 ## Implementation notes
 
 - The inline-tag parsing (token grammar, code/HTML exclusion ranges, tag validation) is a faithful
@@ -83,3 +71,8 @@ Copy `main.js`, `manifest.json` (and `styles.css` if added) into
   plan's body-first ordering on purpose: if a crash occurs between the two steps, the result is a
   recoverable duplicate (the inline tag is still present *and* in frontmatter) rather than
   irrecoverable data loss, and re-running the converter is idempotent.
+
+
+## AI Disclosure
+
+This plugin was co-authored by Claude Opus 4.8.
