@@ -31,7 +31,7 @@ export class ProgressModal extends Modal {
         this.etaEl = contentEl.createEl('p', { text: '', cls: 'inherit-tags-detail-muted' });
 
         new Setting(contentEl).addButton(button =>
-            button.setButtonText('Cancel').setDestructive().onClick(() => {
+            button.setButtonText('Cancel').setWarning().onClick(() => {
                 this.cancelled = true;
                 this.close();
             })

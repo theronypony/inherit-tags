@@ -70,7 +70,7 @@ class ConfirmDialog extends Modal {
                     .onClick(() => this.finish(false))
             )
             .addButton(button =>
-                button.setButtonText(this.options.confirmText).setDestructive().onClick(() => this.finish(true))
+                button.setButtonText(this.options.confirmText).setWarning().onClick(() => this.finish(true))
             );
     }
 
