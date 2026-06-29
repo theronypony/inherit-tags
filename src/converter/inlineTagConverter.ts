@@ -1,4 +1,4 @@
-import { App, TFile } from 'obsidian';
+import { App, DataWriteOptions, TFile } from 'obsidian';
 import { NumericRange, mergeRanges } from '../utils/ranges';
 import { computeExclusionRanges } from './exclusionRanges';
 import { ExtractorSettings, TagConvertPolicy, extractInlineTags } from './tagExtractor';
@@ -193,6 +193,12 @@ export async function convertSingleFile(
         return { path: file.path, extractedTags: [], status: 'failed', error: describe(error) };
     }
 
+    // Capture the file's pre-conversion timestamps once, before any write touches `file.stat`.
+    // Both writes below reuse these so the converted file keeps its original modification date
+    // instead of being stamped with "now". (ctime restore is best-effort; some OSes/filesystems
+    // ignore it, but mtime — the user-facing modification date — is preserved reliably.)
+    const writeOptions: DataWriteOptions = { ctime: file.stat.ctime, mtime: file.stat.mtime };
+
     const existing = normalizeTagsValue(app.metadataCache.getFileCache(file)?.frontmatter?.tags);
     const policy = buildConvertPolicy(existingOnly, file.path, existing);
 
@@ -208,7 +214,7 @@ export async function convertSingleFile(
     const tagsToAdd = computeTagsToAdd(existing, tags);
     if (tagsToAdd.length > 0) {
         try {
-            await mergeTagsIntoFrontmatter(app, file, tags);
+            await mergeTagsIntoFrontmatter(app, file, tags, writeOptions);
         } catch (error) {
             // Could not write frontmatter (e.g. malformed YAML) → do NOT strip the body.
             return { path: file.path, extractedTags: tags, status: 'failed', error: describe(error) };
@@ -224,7 +230,7 @@ export async function convertSingleFile(
                 return data;
             }
             return stripInlineTags(data, dataRemovals);
-        });
+        }, writeOptions);
     } catch (error) {
         // Frontmatter already updated; inline tags remain → recoverable duplicate, not data loss.
         return { path: file.path, extractedTags: tags, status: 'failed', error: describe(error) };

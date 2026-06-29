@@ -1,4 +1,4 @@
-import { App, TFile } from 'obsidian';
+import { App, DataWriteOptions, TFile } from 'obsidian';
 import { isDescendantOf, tagsEqual } from './utils/tagHierarchy';
 
 /**
@@ -78,8 +78,16 @@ export function computeTagsToAdd(existingTags: string[], candidateTags: string[]
  * - No frontmatter → a block is created automatically by Obsidian.
  * - Existing non-array `tags` (single string) → normalized to an array.
  * - Existing array → appended to, preserving order and existing entries.
+ *
+ * Pass `options` (`{ ctime, mtime }`) to preserve the file's original timestamps across the write;
+ * omit it to let Obsidian stamp the current time (the default for live auto-tagging).
  */
-export async function mergeTagsIntoFrontmatter(app: App, file: TFile, tags: string[]): Promise<string[]> {
+export async function mergeTagsIntoFrontmatter(
+    app: App,
+    file: TFile,
+    tags: string[],
+    options?: DataWriteOptions
+): Promise<string[]> {
     let added: string[] = [];
 
     await app.fileManager.processFrontMatter(file, (frontmatter: Record<string, unknown>) => {
@@ -90,7 +98,7 @@ export async function mergeTagsIntoFrontmatter(app: App, file: TFile, tags: stri
         }
         // Write back as a clean array of the union, preserving existing order then new tags.
         frontmatter.tags = [...existing, ...added];
-    });
+    }, options);
 
     return added;
 }
